@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan Cloud Practitioner</title>
+<meta name="description" content="Temario semana a semana para el AWS Certified Cloud Practitioner (CLF-C02). Examen: viernes 18 de diciembre de 2026.">
+<style>
+  :root {
+    --bg: #f6f5f1;
+    --surface: #ffffff;
+    --surface-2: #f0eee8;
+    --text: #1d1c1a;
+    --muted: #67645e;
+    --border: #e3e0d8;
+    --accent: #c2410c;
+    --accent-soft: #fdebe1;
+    --ok: #15803d;
+    --ok-soft: #def4e5;
+    --track: #e7e4dc;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151513;
+      --surface: #1e1e1b;
+      --surface-2: #262622;
+      --text: #ecebe6;
+      --muted: #a3a097;
+      --border: #34332e;
+      --accent: #fb8a4c;
+      --accent-soft: #3a2418;
+      --ok: #4ade80;
+      --ok-soft: #173322;
+      --track: #34332e;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151513;
+    --surface: #1e1e1b;
+    --surface-2: #262622;
+    --text: #ecebe6;
+    --muted: #a3a097;
+    --border: #34332e;
+    --accent: #fb8a4c;
+    --accent-soft: #3a2418;
+    --ok: #4ade80;
+    --ok-soft: #173322;
+    --track: #34332e;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { line-height: 1.2; margin: 6px 0 8px; font-size: clamp(1.75rem, 5vw, 2.4rem); }
+  p { margin: 0 0 10px; }
+  a { color: var(--accent); }
+  .muted { color: var(--muted); }
+
+  /* Encabezado */
+  .eyebrow { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .hero {
+    display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: end;
+    padding-bottom: 24px; border-bottom: 1px solid var(--border);
+  }
+  .countdown { text-align: right; }
+  .countdown .num { font-size: 3rem; font-weight: 700; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .countdown .lbl { color: var(--muted); font-size: .9rem; }
+  .overall { margin: 20px 0 28px; }
+  .overall-row { display: flex; justify-content: space-between; font-size: .9rem; margin-bottom: 6px; gap: 12px; }
+  .bar { height: 8px; background: var(--track); border-radius: 99px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width .25s ease; }
+  .now-link { display: inline-block; margin-top: 14px; font-size: .9rem; }
+
+  /* Semanas */
+  .week { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+  .week.current { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .week > summary { list-style: none; cursor: pointer; padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: center; }
+  .week > summary::-webkit-details-marker { display: none; }
+  .week > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 12px; }
+  .wk-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+  .wk-label { font-size: .8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .wk-dates { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .wk-title { grid-column: 1 / -1; font-size: 1.05rem; font-weight: 600; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .tag { font-size: .75rem; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--surface-2); color: var(--muted); }
+  .badge { font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); text-transform: uppercase; letter-spacing: .04em; }
+  .badge.done { background: var(--ok-soft); color: var(--ok); }
+  .wk-progress { display: flex; align-items: center; gap: 10px; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .wk-progress .bar { width: 90px; height: 6px; }
+  .wk-progress .bar > span { background: var(--ok); }
+  .chev { transition: transform .2s; color: var(--muted); }
+  .week[open] .chev { transform: rotate(90deg); }
+  .wk-body { padding: 0 16px 16px; }
+  .goal { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; margin-bottom: 12px; font-size: .92rem; }
+  .goal b { color: var(--accent); }
+  .items { list-style: none; margin: 0; padding: 0; }
+  .items li { border-top: 1px solid var(--border); }
+  .items label { display: grid; grid-template-columns: 22px 1fr; gap: 10px; padding: 10px 2px; cursor: pointer; align-items: start; }
+  .items input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--ok); cursor: pointer; }
+  .items .t { display: block; }
+  .items .d { display: block; font-size: .85rem; color: var(--muted); margin-top: 2px; }
+  .items input:checked + span .t { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); }
+
+  .exam-day { background: var(--accent); color: #fff; border-radius: 12px; padding: 16px; font-weight: 700; font-size: 1.1rem; }
+  :root[data-theme="dark"] .exam-day { color: #1d1208; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .exam-day { color: #1d1208; } }
+
+  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); font-size: .85rem; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  button.link { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; cursor: pointer; font: inherit; }
+  button.link:hover { color: var(--text); }
+
+  @media (max-width: 640px) {
+    main { padding-top: 24px; }
+    .hero { grid-template-columns: 1fr; }
+    .countdown { text-align: left; }
+    .wk-progress .bar { width: 56px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <header>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">AWS Certified Cloud Practitioner · CLF-C02</div>
+        <h1>Plan de estudio</h1>
+        <p class="muted">Examen: viernes 18 de diciembre de 2026.</p>
+      </div>
+      <div class="countdown" aria-live="polite">
+        <div class="num" id="days">–</div>
+        <div class="lbl" id="days-lbl">días para el examen</div>
+      </div>
+    </div>
+    <div class="overall">
+      <div class="overall-row"><span>Tu avance <span class="muted">(se guarda en tu navegador)</span></span><span id="overall-txt" class="muted"></span></div>
+      <div class="bar"><span id="overall-bar" style="width:0"></span></div>
+      <a class="now-link" id="now-link" href="#weeks" hidden></a>
+    </div>
+  </header>
+
+  <div id="weeks"></div>
+  <div class="exam-day">Viernes 18/12 · Examen</div>
+
+  <footer>
+    <span>Temario de la guía oficial CLF-C02.</span>
+    <button class="link" id="reset" type="button">Borrar mi avance</button>
+  </footer>
+
+</main>
+
+<script>
+  const EXAM = new Date(2026, 11, 18);
+  const KEY = 'clf-c02-plan-v1';
+
+  const WEEKS = [
+    {
+      id: 's0', label: 'Semana 0', dates: '29/10 – 1/11', from: '2026-10-29', to: '2026-11-01',
+      title: 'Arranque',
+      goal: 'Tenés tu puntaje de partida.',
+      items: [
+        { t: 'Curso AWS Cloud Practitioner Essentials (Skill Builder)' },
+        { t: 'Official Practice Question Set (20 preguntas), sin estudiar antes' }
+      ]
+    },
+    {
+      id: 's1', label: 'Semana 1', dates: '2/11 – 8/11', from: '2026-11-02', to: '2026-11-08',
+      title: 'Conceptos de la nube e infraestructura global', tag: 'D1 · 3.1 · 3.2',
+      goal: 'Explicás de memoria los 6 pilares, las 6 perspectivas de CAF y las 7 R.',
+      items: [
+        { t: 'Las 6 ventajas de la nube', d: 'Gasto variable en lugar de fijo · economías de escala · no adivinar la capacidad · velocidad y agilidad · no mantener datacenters · llegar a todo el mundo en minutos' },
+        { t: 'Alta disponibilidad, elasticidad y agilidad' },
+        { t: 'Los 6 pilares de Well-Architected', d: 'Excelencia operativa · seguridad · confiabilidad · eficiencia de rendimiento · optimización de costos · sostenibilidad' },
+        { t: 'Las 6 perspectivas de AWS CAF', d: 'Negocio · personas · gobierno · plataforma · seguridad · operaciones' },
+        { t: 'Las 7 R de migración', d: 'Retire · retain · rehost · relocate · repurchase · replatform · refactor' },
+        { t: 'Herramientas de migración', d: 'Migration Hub · Application Discovery Service · Application Migration Service · Migration Evaluator · DMS · SCT' },
+        { t: 'Economía de la nube', d: 'CapEx y OpEx · TCO · BYOL y licencia incluida · rightsizing · automatización' },
+        { t: 'Formas de operar y modelos de despliegue', d: 'Consola, CLI/SDK o IaC · nube, híbrido u on-premises' },
+        { t: 'Regiones, zonas de disponibilidad, edge locations y Outposts', d: 'Varias regiones: recuperación ante desastres · latencia · soberanía de datos' }
+      ]
+    },
+    {
+      id: 's2', label: 'Semana 2', dates: '9/11 – 15/11', from: '2026-11-09', to: '2026-11-15',
+      title: 'Cómputo y almacenamiento', tag: '3.3 · 3.6',
+      goal: 'Ante un caso, elegís entre EC2, Lambda, Fargate o ECS, y la clase de S3 adecuada.',
+      items: [
+        { t: 'Familias de instancias EC2', d: 'Propósito general · optimizadas para cómputo, memoria o almacenamiento · aceleradas' },
+        { t: 'ELB y Auto Scaling' },
+        { t: 'Lambda, Fargate, ECS, EKS y ECR' },
+        { t: 'Elastic Beanstalk, Lightsail y Batch' },
+        { t: 'S3 y sus clases de almacenamiento', d: 'Standard · Intelligent-Tiering · Standard-IA · One Zone-IA · Glacier Instant, Flexible y Deep Archive' },
+        { t: 'Políticas de ciclo de vida de S3' },
+        { t: 'EBS e instance store · EFS y FSx' },
+        { t: 'Storage Gateway, AWS Backup y Elastic Disaster Recovery' }
+      ]
+    },
+    {
+      id: 's3', label: 'Semana 3', dates: '16/11 – 22/11', from: '2026-11-16', to: '2026-11-22',
+      title: 'Bases de datos y redes', tag: '3.4 · 3.5',
+      goal: '65% o más en preguntas de práctica de D1 y D3.',
+      items: [
+        { t: 'Base propia en EC2 o servicio administrado' },
+        { t: 'Bases de datos administradas', d: 'RDS y Aurora: relacionales · DynamoDB: NoSQL · ElastiCache: en memoria · DocumentDB: documentos · Neptune: grafos · Redshift: data warehouse' },
+        { t: 'DMS y SCT' },
+        { t: 'VPC', d: 'Subredes públicas y privadas · Internet Gateway · NAT Gateway' },
+        { t: 'Security Groups y NACLs', d: 'Security Group: stateful, por instancia · NACL: stateless, por subred' },
+        { t: 'Route 53, CloudFront, Global Accelerator y API Gateway' },
+        { t: 'Direct Connect, Site-to-Site VPN y Client VPN' },
+        { t: 'Transit Gateway y PrivateLink' },
+        { t: 'Sábado: preguntas de práctica de D1 y D3' }
+      ]
+    },
+    {
+      id: 's4', label: 'Semana 4', dates: '23/11 – 29/11', from: '2026-11-23', to: '2026-11-29',
+      title: 'Seguridad y compliance', tag: 'D2',
+      goal: 'Explicás la responsabilidad compartida en EC2, RDS y Lambda, y sacás 70% o más en D2.',
+      items: [
+        { t: 'Modelo de responsabilidad compartida', d: 'AWS: seguridad de la nube · vos: seguridad en la nube · cómo cambia en EC2, RDS y Lambda' },
+        { t: 'IAM: usuarios, grupos, roles y políticas administradas o propias' },
+        { t: 'Mínimo privilegio y MFA' },
+        { t: 'Usuario root: tareas que solo puede hacer él y cómo protegerlo' },
+        { t: 'IAM Identity Center, federación, roles entre cuentas, Cognito y Directory Service' },
+        { t: 'Secrets Manager y Parameter Store · KMS y CloudHSM · ACM' },
+        { t: 'Cifrado en tránsito y en reposo' },
+        { t: 'WAF, Shield, Firewall Manager, GuardDuty, Inspector, Macie, Detective y Security Hub' },
+        { t: 'CloudTrail, CloudWatch, Config, Artifact y Trusted Advisor', d: 'CloudTrail: quién hizo qué llamada a la API · CloudWatch: métricas, logs y alarmas · Config: historial de configuración y cumplimiento · Artifact: reportes de compliance' },
+        { t: 'Fuentes de información de seguridad', d: 'Knowledge Center · Security Center · Security Blog · productos de terceros en Marketplace' }
+      ]
+    },
+    {
+      id: 's5', label: 'Semana 5', dates: '30/11 – 6/12', from: '2026-11-30', to: '2026-12-06',
+      title: 'Facturación, soporte y gobierno', tag: 'D4',
+      goal: 'Distinguís Budgets, Cost Explorer, Pricing Calculator y CUR, y los planes de soporte.',
+      items: [
+        { t: 'On-Demand, Savings Plans y Spot' },
+        { t: 'Reserved Instances', d: 'Standard y Convertible · 1 o 3 años · cómo se comparten en Organizations' },
+        { t: 'Dedicated Hosts, Dedicated Instances y Capacity Reservations' },
+        { t: 'Costos de transferencia de datos', d: 'Lo que entra es gratis; lo que sale a internet o pasa a otra región se cobra.' },
+        { t: 'Budgets, Cost Explorer, Pricing Calculator y CUR', d: 'Budgets: alertas por umbral · Cost Explorer: análisis del gasto · Pricing Calculator: estimar antes de crear · CUR: el reporte más detallado' },
+        { t: 'Consolidated billing y cost allocation tags' },
+        { t: 'Planes de soporte', d: 'Basic · Developer · Business · Enterprise On-Ramp · Enterprise' },
+        { t: 'Trusted Advisor, Health Dashboard y Trust & Safety' },
+        { t: 'APN, Marketplace, Professional Services, re:Post, Knowledge Center y Prescriptive Guidance' },
+        { t: 'CloudFormation, Systems Manager, Organizations, Control Tower y Service Catalog' },
+        { t: 'Service Quotas, License Manager, Compute Optimizer y Well-Architected Tool' }
+      ]
+    },
+    {
+      id: 's6', label: 'Semana 6', dates: '7/12 – 13/12', from: '2026-12-07', to: '2026-12-13',
+      title: 'Resto del catálogo y simulacro 1', tag: '3.7 · 3.8',
+      goal: '75% o más en un simulacro completo.',
+      items: [
+        { t: 'IA/ML', d: 'SageMaker AI · Lex · Polly · Rekognition · Comprehend · Textract · Transcribe · Translate · Amazon Q' },
+        { t: 'Analítica', d: 'Athena · EMR · Glue · Kinesis · OpenSearch · Quick Sight · Redshift' },
+        { t: 'EventBridge, SNS, SQS y Step Functions' },
+        { t: 'Connect y SES' },
+        { t: 'CodeBuild, CodePipeline, X-Ray y la CLI' },
+        { t: 'AppStream 2.0, WorkSpaces y WorkSpaces Secure Browser' },
+        { t: 'Amplify e IoT Core' },
+        { t: 'Sábado 12/12: simulacro completo (65 preguntas, 90 minutos)' }
+      ]
+    },
+    {
+      id: 'fin', label: 'Semana final', dates: '14/12 – 17/12', from: '2026-12-14', to: '2026-12-17',
+      title: 'Simulacros y repaso',
+      goal: 'Dos simulacros seguidos con 80% o más.',
+      items: [
+        { t: 'Lunes 14: simulacro completo' },
+        { t: 'Martes 15: repasar las preguntas erradas' },
+        { t: 'Miércoles 16: simulacro completo' },
+        { t: 'Jueves 17: repaso liviano' }
+      ]
+    }
+  ];
+
+  function load() {
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY));
+      if (s && typeof s === 'object' && s.done) return { done: s.done };
+    } catch (e) {}
+    return { done: {} };
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function toDate(iso) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  let state = load();
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const current = WEEKS.find(w => today >= toDate(w.from) && today <= toDate(w.to));
+
+  function renderCountdown() {
+    const days = Math.round((EXAM - today) / 864e5);
+    const num = document.getElementById('days');
+    const lbl = document.getElementById('days-lbl');
+    if (days > 0) {
+      num.textContent = days;
+      lbl.textContent = days === 1 ? 'día para el examen' : 'días para el examen';
+    } else if (days === 0) {
+      num.textContent = 'Hoy';
+      lbl.textContent = 'es el examen. ¡Suerte!';
+    } else {
+      num.textContent = '✓';
+      lbl.textContent = 'el examen ya pasó';
+    }
+    if (current) {
+      const link = document.getElementById('now-link');
+      link.textContent = 'Esta semana: ' + current.title + ' →';
+      link.href = '#' + current.id;
+      link.hidden = false;
+    }
+  }
+
+  function weekStats(w) {
+    const done = w.items.filter((_, i) => state.done[w.id + '-' + i]).length;
+    return { done, total: w.items.length };
+  }
+
+  function renderWeeks() {
+    const root = document.getElementById('weeks');
+    root.innerHTML = '';
+    WEEKS.forEach(w => {
+      const isCurrent = current && current.id === w.id;
+      const det = document.createElement('details');
+      det.className = 'week' + (isCurrent ? ' current' : '');
+      det.id = w.id;
+      if (isCurrent || (!current && w.id === WEEKS[0].id)) det.open = true;
+
+      const items = w.items.map((it, i) => {
+        const key = w.id + '-' + i;
+        return '<li><label>' +
+          '<input type="checkbox" data-key="' + key + '"' + (state.done[key] ? ' checked' : '') + '>' +
+          '<span><span class="t">' + it.t + '</span>' +
+          (it.d ? '<span class="d">' + it.d + '</span>' : '') + '</span>' +
+          '</label></li>';
+      }).join('');
+
+      det.innerHTML =
+        '<summary>' +
+          '<div class="wk-head"><span class="wk-label">' + w.label + '</span><span class="wk-dates">' + w.dates + '</span></div>' +
+          '<div class="wk-progress"><span class="wk-count"></span><div class="bar"><span></span></div><span class="chev" aria-hidden="true">›</span></div>' +
+          '<div class="wk-title">' + w.title +
+            (w.tag ? '<span class="tag">' + w.tag + '</span>' : '') +
+            (isCurrent ? '<span class="badge">Esta semana</span>' : '') +
+            '<span class="badge done" hidden>Completa</span>' +
+          '</div>' +
+        '</summary>' +
+        '<div class="wk-body">' +
+          '<div class="goal"><b>Meta:</b> ' + w.goal + '</div>' +
+          '<ul class="items">' + items + '</ul>' +
+        '</div>';
+      root.appendChild(det);
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    let done = 0, total = 0;
+    WEEKS.forEach(w => {
+      const s = weekStats(w);
+      done += s.done; total += s.total;
+      const det = document.getElementById(w.id);
+      det.querySelector('.wk-count').textContent = s.done + '/' + s.total;
+      det.querySelector('.wk-progress .bar > span').style.width = (100 * s.done / s.total) + '%';
+      det.querySelector('.badge.done').hidden = s.done !== s.total;
+    });
+    const pct = Math.round(100 * done / total);
+    document.getElementById('overall-bar').style.width = pct + '%';
+    document.getElementById('overall-txt').textContent = done + ' de ' + total + ' · ' + pct + '%';
+  }
+
+  document.addEventListener('change', e => {
+    const key = e.target.dataset && e.target.dataset.key;
+    if (!key) return;
+    if (e.target.checked) state.done[key] = true; else delete state.done[key];
+    save();
+    updateProgress();
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    if (!confirm('¿Borrar tu avance? Solo afecta a este navegador.')) return;
+    state = { done: {} };
+    save();
+    renderWeeks();
+  });
+
+  renderCountdown();
+  renderWeeks();
+</script>
+</body>
+</html>
